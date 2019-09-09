@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mp?useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: root
+logging:
+  level:
+    #\u53EA\u770B\u8B66\u544A\u7EA7\u522B\u7684\u65E5\u5FD7
+    root: warn
+    #\u53EA\u770B\u5230dao\u5305\u4E0B\uFF0Ctrace\u7EA7\u522B\u7684\uFF0C\u6BD4debug\u8FD8\u4F4E\u7684\u7EA7\u522B
+    com.mp.dao: trace
+  pattern:
+    #%p\u8F93\u51FA\u7EA7\u522B %m\u5185\u5BB9 %n\u6362\u884C \u6267\u884C\u65F6\u95F4\u5305\u540D\u7C7B\u540D\u4E0D\u8F93\u51FA
+    console: '%p%m%n'
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/**
+  global-config:
+    db-config:
+      id-type: uuid  #全局的主键策略
+      #field-strategy：默认值为not_null,若该属性为null时不会放入sql中
+      #not_empty：是对sql语句操作时，若该属性为null或空串时不会放入sql中，
+      #ignore：要慎用，因为若更新时没有给属性赋值，null和空串都会在sql语句中，可能会对数据库中的原有数据覆盖成null或空串
+      field-strategy: not_empty
+      table-prefix: mp_  #如果这里指定了表明前缀，数据库中的为mp_user则User实体类中不用加@TableName("mp_user");
+  #包名改变 简写   <select id="selectAll" resultType="User">
+  type-aliases-package: com.mp.entity
+  configuration:
+    map-underscore-to-camel-case: true  #默认为true转驼峰命名开启 ，原生的mybatis也有但是默认为false
+  #check-config-location: classpath:mybatis-config.xml  #不能和configuration配置一起出现
